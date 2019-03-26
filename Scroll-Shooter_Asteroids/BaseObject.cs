@@ -28,7 +28,6 @@ namespace Scroll_Shooter_Asteroids
             Game.Buffer.Graphics.DrawEllipse(Pens.White, Pos.X, Pos.Y, Size.Width, Size.Height);
             //Image skin = Image.FromFile("torpedo.png");
             //Game.Buffer.Graphics.DrawImage(skin, Pos.X, Pos.Y, Size.Width, Size.Height);
-            //
         }
         /// <summary>
         /// Метод описывает поведение объекта(меняет направление на обратное), если его координаты выходят за область игрового пространства
