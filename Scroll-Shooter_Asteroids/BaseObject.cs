@@ -23,17 +23,7 @@ namespace Scroll_Shooter_Asteroids
         /// <summary>
         /// Абстрактный метод для вывода графики
         /// </summary>
-<<<<<<< Updated upstream
-        public virtual void Draw()
-        {
-            Game.Buffer.Graphics.DrawEllipse(Pens.White, Pos.X, Pos.Y, Size.Width, Size.Height);
-            //Image skin = Image.FromFile("torpedo.png");
-            //Game.Buffer.Graphics.DrawImage(skin, Pos.X, Pos.Y, Size.Width, Size.Height);
-        }
-=======
         public abstract void Draw();
-
->>>>>>> Stashed changes
         /// <summary>
         /// Метод описывает поведение объекта(меняет направление на обратное), если его координаты выходят за область игрового пространства
         /// </summary>
