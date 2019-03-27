@@ -1,11 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Scroll_Shooter_Asteroids 
 {
     /// <summary>
     /// Класс для реализации игрового объекта Asteroid
     /// </summary>
-    class Asteroid : BaseObject
+    class Asteroid : BaseObject, ICloneable
     {
         public int Power { get; set; }
         /// <summary>
@@ -24,6 +25,16 @@ namespace Scroll_Shooter_Asteroids
         public override void Draw()
         {
             Game.Buffer.Graphics.FillEllipse(Brushes.White, Pos.X, Pos.Y, Size.Width, Size.Height);
+        }
+        /// <summary>
+        /// Метод реализующий клонирование объекта Asteroid
+        /// </summary>
+        /// <returns></returns>
+        public object Clone()
+        {
+            Asteroid asteroid = new Asteroid(new Point(Pos.X, Pos.Y), new Point(Dir.X, Dir.Y), new Size(Size.Width, Size.Height));
+            asteroid.Power = Power;
+            return asteroid;
         }
     }
 }
