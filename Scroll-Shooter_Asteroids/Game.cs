@@ -9,6 +9,8 @@ namespace Scroll_Shooter_Asteroids
     /// </summary>
     class Game
     {
+        private static Asteroid[] _asteroids;
+        private static Bullet _bullet;
         public static BaseObject[] _objs;
         private static BufferedGraphicsContext _context;
         public static BufferedGraphics Buffer;
@@ -29,13 +31,13 @@ namespace Scroll_Shooter_Asteroids
         /// <param name="e"></param>
         private static void Timer_Tick(object sender, EventArgs e)
         {
-            Draw();
             Update();
+            Draw();          
         }
         /// <summary>
         /// Метод для иницализации игровой области
         /// </summary>
-        /// <param name="form"></param>
+        /// <param name="form">получение формы</param>
         public static void Init(Form form)
         {
             // Графическое устройство для вывода графики            
@@ -49,48 +51,46 @@ namespace Scroll_Shooter_Asteroids
             Height = form.ClientSize.Height;
             // Связываем буфер в памяти с графическим объектом, чтобы рисовать в буфере
             Buffer = _context.Allocate(g, new Rectangle(0, 0, Width, Height));
-
-            Load();
-
             //Появление объектов в определенный интервал времени
             Timer timer = new Timer { Interval = 100 };
             timer.Start();
             timer.Tick += Timer_Tick;
-        }
 
+            Load();
+        }
         /// <summary>
         /// Метод для инициализации объектов в игровой области
         /// </summary>
         public static void Load()
         {
-            Random r = new Random();
-
             _objs = new BaseObject[30];
-            for (int i = 0; i < _objs.Length/2; i++)
+            _bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));
+            _asteroids = new Asteroid[3];
+            Random rnd = new Random();
+
+            for (int i = 0; i < _objs.Length; i++)
             {
-                _objs[i] = new BaseObject(new Point(300, 15 - i), new Point(-i, -i), new Size(32, 32));
+                int r = rnd.Next(5, 50);
+                _objs[i] = new Star(new Point(1000, rnd.Next(0, Height)), new Point(-r, r), new Size(3, 3));
             }
-                
-            for (int i = _objs.Length/4; i < _objs.Length; i++)
-            {               
-                _objs[i] = new Star(new Point(500 * r.Next(1,5), i * r.Next(20, 25)), new Point(-i, 0), new Size(5, 5));
+
+            for (int i = 0; i < _asteroids.Length; i++)
+            {
+                int r = rnd.Next(5, 50);
+                _asteroids[i] = new Asteroid(new Point(1000, rnd.Next(0, Height)), new Point(-r / 5, r), new Size(r, r));
             }
-               
         }
         /// <summary>
         /// Вывод графики 
         /// </summary>
         public static void Draw()
         {
-            // Проверяем вывод графики
-            //Buffer.Graphics.Clear(Color.Black);
-            //Buffer.Graphics.DrawRectangle(Pens.White, new Rectangle(100, 100, 200, 200));
-            //Buffer.Graphics.FillEllipse(Brushes.Wheat, new Rectangle(100, 100, 200, 200));
-            //Buffer.Render();
-
             Buffer.Graphics.Clear(Color.Black);
             foreach (BaseObject obj in _objs)
-            obj.Draw();
+                obj.Draw();
+            foreach (BaseObject ast in _asteroids)
+                ast.Draw();
+            _bullet.Draw();
             Buffer.Render();
         }
         /// <summary>
@@ -100,6 +100,9 @@ namespace Scroll_Shooter_Asteroids
         {
             foreach (BaseObject obj in _objs)
                 obj.Update();
+            foreach (BaseObject ast in _asteroids)
+                ast.Update();
+            _bullet.Update();
         }
     }
 }
