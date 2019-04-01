@@ -10,10 +10,16 @@ namespace Scroll_Shooter_Asteroids
     class Game
     {
         private static Asteroid[] _asteroids;
-        private static Bullet _bullet;
+
         public static BaseObject[] _objs;
+
         private static BufferedGraphicsContext _context;
         public static BufferedGraphics Buffer;
+
+        private static Bullet _bullet;
+        public static Point pos_bullet = new Point(0, 200);
+        public static Point dir_bullet = new Point(5, 0);
+        public static Size size_bullet = new Size(4, 1);            
         // Свойства
         // Ширина и высота игрового поля
         public static int Width { get; set; }
@@ -63,9 +69,9 @@ namespace Scroll_Shooter_Asteroids
         /// </summary>
         public static void Load()
         {
-            _objs = new BaseObject[30];
-            _bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));
-            _asteroids = new Asteroid[3];
+            _objs = new BaseObject[50];
+            _bullet = new Bullet(pos_bullet, dir_bullet, size_bullet);
+            _asteroids = new Asteroid[10];
             Random rnd = new Random();
 
             for (int i = 0; i < _objs.Length; i++)
@@ -101,7 +107,13 @@ namespace Scroll_Shooter_Asteroids
             foreach (BaseObject obj in _objs)
                 obj.Update();
             foreach (BaseObject ast in _asteroids)
+            {
                 ast.Update();
+                if (ast.Collision(_bullet))
+                {
+                    System.Media.SystemSounds.Hand.Play();
+                }
+            }                
             _bullet.Update();
         }
     }

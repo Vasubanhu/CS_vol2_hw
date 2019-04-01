@@ -1,9 +1,11 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Scroll_Shooter_Asteroids
 {
-    abstract class BaseObject
+    /// <summary>
+    /// Общий класс для объектов
+    /// </summary>
+    abstract class BaseObject : ICollision 
     {
         protected Point Pos;
         protected Point Dir;
@@ -32,5 +34,13 @@ namespace Scroll_Shooter_Asteroids
             Pos.X = Pos.X + Dir.X;
             if (Pos.X < 0) Pos.X = Game.Width + Size.Width;
         }
+
+        public Rectangle Rect => new Rectangle(Pos, Size);
+        /// <summary>
+        /// Реализация проверки пересечения объектов
+        /// </summary>
+        /// <param name="o">принимает в качестве параметра объект</param>
+        /// <returns></returns>
+        public bool Collision(ICollision o) => o.Rect.IntersectsWith(this.Rect);
     }
 }
